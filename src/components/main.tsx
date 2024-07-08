@@ -94,7 +94,10 @@ export const Main: FC = () => {
   },[fetchNfts, nfts, userPubKey, walletSinger])
 
   const onMint = useCallback(async () => {
-    console.log(userPubKey,'userPubkey')
+    if(userPubKey === null){
+      toast.error('Connect wallet first.')
+      return
+    } 
     if(userPubKey == null) return
     const name = 'Dirt Block'
     const symbol = 'DBlock'
@@ -155,6 +158,10 @@ export const Main: FC = () => {
   },[fetchNfts, userPubKey, walletSinger])
 
   const onClaim = useCallback(async () => {
+    if(userPubKey === null){
+      toast.error('Connect wallet first.')
+      return
+    } 
     if(nfts.length === 0){
       toast.error("You dont have nfts to claim.")
       return
