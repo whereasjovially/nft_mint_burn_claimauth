@@ -195,6 +195,7 @@ export const Main: FC = () => {
       }
     );
     console.log('Your transcatoin is ', tx )
+    getBalacne(userPubKey)
     toast.info("Claimed successfully.")
   },[walletSinger, nfts, userPubKey])
 
@@ -238,7 +239,7 @@ export const Main: FC = () => {
         {/* Mint, Claim */}
         <div className="flex space-x-4 justify-center">
             <button onClick={onMint} className="border px-2">MINT</button>
-            <button onClick={onClaim} className="border px-2">CLAIM</button>
+            <button onClick={onClaim} className="border px-2">CLAIM (0.01 SOL)</button>
 
         </div>
       </div>
