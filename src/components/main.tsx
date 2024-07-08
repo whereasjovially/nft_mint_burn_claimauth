@@ -203,6 +203,8 @@ export const Main: FC = () => {
     if(connected && userPubKey?.toString() !== undefined && wallet !== null){
       fetchNfts(userPubKey?.toString())
       getBalacne(userPubKey)
+    }else{
+      setBalance(0)
     }
   },[connected, fetchNfts, userPubKey, wallet])
 
