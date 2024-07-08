@@ -3,7 +3,7 @@ import { AnchorProvider, Idl, Program, Wallet, web3 } from "@coral-xyz/anchor";
 import { Metadata, Metaplex, Nft, Sft } from "@metaplex-foundation/js";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletDisconnectButton, WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { Connection, PublicKey, SystemProgram } from "@solana/web3.js";
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram } from "@solana/web3.js";
 import { FC, useCallback, useEffect, useState } from "react";
 import nftIDL from '@/abi/nft.json'
 import axios from "axios";
@@ -21,6 +21,7 @@ export const Main: FC = () => {
   
   const {wallet, connected, publicKey:userPubKey}  = walletSinger
   const [ nfts, setNfts] = useState<any[]>([])
+  const [ balance, setBalance] = useState<number>(0)
 
 
   const fetchNfts = useCallback(async (address: string) => {
@@ -54,6 +55,12 @@ export const Main: FC = () => {
     setNfts(nftMetadatas)
 
   },[wallet])
+
+  const getBalacne = async (userPubKey: PublicKey) => {
+    const dBalance = await connection.getBalance(userPubKey)
+    const solB = dBalance / LAMPORTS_PER_SOL
+    setBalance(solB)
+  }
 
   const onBurn = useCallback(async () => {
     if(userPubKey === null){
@@ -194,6 +201,7 @@ export const Main: FC = () => {
   useEffect(()=>{
     if(connected && userPubKey?.toString() !== undefined && wallet !== null){
       fetchNfts(userPubKey?.toString())
+      getBalacne(userPubKey)
     }
   },[connected, fetchNfts, userPubKey, wallet])
 
@@ -202,7 +210,10 @@ export const Main: FC = () => {
 
       <div className="w-full">
         <div className="w-full flex  justify-end">
-          <WalletMultiButton />
+          <div className="flex flex-col space-y-2">
+            <WalletMultiButton />
+            <p>{`Balance: ${balance.toFixed(4)} SOL`}</p>           
+          </div>
         </div>
 
         {/* Show user's nfts */}
