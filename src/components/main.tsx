@@ -205,6 +205,7 @@ export const Main: FC = () => {
       getBalacne(userPubKey)
     }else{
       setBalance(0)
+      setNfts([])
     }
   },[connected, fetchNfts, userPubKey, wallet])
 
